@@ -3,346 +3,191 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neuroanatomy Quiz: Brainstem, Cerebellum & Spinal Cord</title>
+    <title>Neuroanatomy Study Slides</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f4f8;
-            color: #333;
-            line-height: 1.6;
-            padding: 20px;
+            background-color: #2c3e50;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
         }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: #ffffff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        h1 {
+        .quiz-container {
+            background: white;
+            width: 90%;
+            max-width: 600px;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
             text-align: center;
-            color: #2c3e50;
-            border-bottom: 2px solid #3498db;
-            padding-bottom: 10px;
         }
-        h2 {
+        .progress-bar {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            margin-bottom: 20px;
+        }
+        .question-text {
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 20px;
             color: #34495e;
-            margin-top: 30px;
         }
-        .question {
-            background: #f9f9f9;
-            margin-bottom: 15px;
-            padding: 15px;
-            border-left: 5px solid #3498db;
-            border-radius: 4px;
+        .options {
+            text-align: left;
+            margin-bottom: 20px;
         }
-        .question p {
-            font-weight: bold;
-            margin-top: 0;
-        }
-        label {
-            display: block;
-            margin-bottom: 8px;
+        .option {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 8px;
             cursor: pointer;
+            transition: all 0.2s;
         }
-        input[type="radio"] {
-            margin-right: 10px;
+        .option:hover {
+            background: #e9ecef;
+        }
+        .option.selected {
+            border-color: #3498db;
+            background: #ebf5fb;
+        }
+        .feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+            font-weight: bold;
+        }
+        .correct { background: #d4edda; color: #155724; }
+        .incorrect { background: #f8d7da; color: #721c24; }
+        
+        .controls {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
         }
         button {
-            display: block;
-            width: 100%;
-            padding: 15px;
-            background-color: #27ae60;
-            color: white;
-            font-size: 18px;
-            font-weight: bold;
+            padding: 12px 25px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            margin-top: 30px;
-            transition: background 0.3s;
+            font-weight: bold;
+            font-size: 1em;
         }
-        button:hover {
-            background-color: #219653;
-        }
-        #results {
-            display: none;
-            margin-top: 30px;
-            padding: 20px;
-            background-color: #e8f8f5;
-            border: 2px solid #2ecc71;
-            border-radius: 5px;
-            text-align: center;
-        }
-        .feedback {
-            font-size: 0.9em;
-            margin-top: 10px;
-            display: none;
-        }
-        .correct-text { color: #27ae60; font-weight: bold; }
-        .incorrect-text { color: #c0392b; font-weight: bold; }
+        #check-btn { background: #3498db; color: white; }
+        #next-btn { background: #27ae60; color: white; display: none; }
+        #restart-btn { background: #e67e22; color: white; display: none; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>Neuroanatomy Quiz</h1>
-    <p style="text-align: center;"><strong>Topics:</strong> The Brainstem & Cerebellum (vii) | The Spinal Cord & Tracts (ix)</p>
+<div class="quiz-container" id="quiz-box">
+    <div class="progress-bar" id="progress">Question 1 of 20</div>
+    <div class="question-text" id="question">Loading...</div>
+    <div class="options" id="options-container"></div>
+    
+    <div class="feedback" id="feedback"></div>
 
-    <form id="quizForm">
-        
-        <h2>Part 1: The Brainstem & Cerebellum (Syllabus Item vii)</h2>
-
-        <div class="question" id="q1-container">
-            <p>1. Which structures connect the cerebellum to the brainstem?</p>
-            <label><input type="radio" name="q1" value="A"> A) Basal ganglia</label>
-            <label><input type="radio" name="q1" value="B"> B) Cerebellar peduncles</label>
-            <label><input type="radio" name="q1" value="C"> C) Corpus callosum</label>
-            <label><input type="radio" name="q1" value="D"> D) Medullary pyramids</label>
-            <div class="feedback" id="f1"></div>
-        </div>
-
-        <div class="question" id="q2-container">
-            <p>2. The cardiovascular and respiratory centers, which control life-sustaining autonomic functions, are primarily located in the:</p>
-            <label><input type="radio" name="q2" value="A"> A) Midbrain</label>
-            <label><input type="radio" name="q2" value="B"> B) Cerebellum</label>
-            <label><input type="radio" name="q2" value="C"> C) Medulla oblongata</label>
-            <label><input type="radio" name="q2" value="D"> D) Thalamus</label>
-            <div class="feedback" id="f2"></div>
-        </div>
-
-        <div class="question" id="q3-container">
-            <p>3. The substantia nigra, a prominent cluster of nuclei involved in motor control and dopamine production, is located in the:</p>
-            <label><input type="radio" name="q3" value="A"> A) Midbrain</label>
-            <label><input type="radio" name="q3" value="B"> B) Pons</label>
-            <label><input type="radio" name="q3" value="C"> C) Medulla</label>
-            <label><input type="radio" name="q3" value="D"> D) Cerebellar cortex</label>
-            <div class="feedback" id="f3"></div>
-        </div>
-
-        <div class="question" id="q4-container">
-            <p>4. Which of the following best describes the primary function of the cerebellum?</p>
-            <label><input type="radio" name="q4" value="A"> A) Initiating voluntary muscle contractions</label>
-            <label><input type="radio" name="q4" value="B"> B) Coordinating motor movements and maintaining balance</label>
-            <label><input type="radio" name="q4" value="C"> C) Processing conscious sensory perception</label>
-            <label><input type="radio" name="q4" value="D"> D) Regulating the sleep-wake cycle</label>
-            <div class="feedback" id="f4"></div>
-        </div>
-
-        <div class="question" id="q5-container">
-            <p>5. The superior colliculi, located on the dorsal surface of the midbrain, are responsible for:</p>
-            <label><input type="radio" name="q5" value="A"> A) Auditory reflexes</label>
-            <label><input type="radio" name="q5" value="B"> B) Visual reflexes (e.g., tracking a moving object)</label>
-            <label><input type="radio" name="q5" value="C"> C) Relaying proprioceptive signals</label>
-            <label><input type="radio" name="q5" value="D"> D) Controlling facial expressions</label>
-            <div class="feedback" id="f5"></div>
-        </div>
-
-        <div class="question" id="q6-container">
-            <p>6. Clinically, damage to the cerebellum usually presents as:</p>
-            <label><input type="radio" name="q6" value="A"> A) Ataxia (uncoordinated, clumsy movements)</label>
-            <label><input type="radio" name="q6" value="B"> B) Spastic paralysis</label>
-            <label><input type="radio" name="q6" value="C"> C) Complete loss of sensation in the limbs</label>
-            <label><input type="radio" name="q6" value="D"> D) Aphasia (inability to speak)</label>
-            <div class="feedback" id="f6"></div>
-        </div>
-
-        <div class="question" id="q7-container">
-            <p>7. Most of the efferent (output) fibers leaving the cerebellum pass through the:</p>
-            <label><input type="radio" name="q7" value="A"> A) Inferior cerebellar peduncle</label>
-            <label><input type="radio" name="q7" value="B"> B) Middle cerebellar peduncle</label>
-            <label><input type="radio" name="q7" value="C"> C) Superior cerebellar peduncle</label>
-            <label><input type="radio" name="q7" value="D"> D) Cerebral peduncles</label>
-            <div class="feedback" id="f7"></div>
-        </div>
-
-        <div class="question" id="q8-container">
-            <p>8. Which diffuse network of neurons extending through the brainstem is critical for maintaining consciousness and alertness?</p>
-            <label><input type="radio" name="q8" value="A"> A) The Reticular Formation (RAS)</label>
-            <label><input type="radio" name="q8" value="B"> B) The Limbic System</label>
-            <label><input type="radio" name="q8" value="C"> C) The Extrapyramidal System</label>
-            <label><input type="radio" name="q8" value="D"> D) The Medial Lemniscus</label>
-            <div class="feedback" id="f8"></div>
-        </div>
-
-        <div class="question" id="q9-container">
-            <p>9. The pneumotaxic center, which helps regulate the rate and pattern of breathing, is found in the:</p>
-            <label><input type="radio" name="q9" value="A"> A) Midbrain</label>
-            <label><input type="radio" name="q9" value="B"> B) Medulla</label>
-            <label><input type="radio" name="q9" value="C"> C) Cerebellum</label>
-            <label><input type="radio" name="q9" value="D"> D) Pons</label>
-            <div class="feedback" id="f9"></div>
-        </div>
-
-        <div class="question" id="q10-container">
-            <p>10. The inferior olivary nuclei of the medulla function primarily as a relay station to deliver what type of information to the cerebellum?</p>
-            <label><input type="radio" name="q10" value="A"> A) Proprioceptive and motor learning signals</label>
-            <label><input type="radio" name="q10" value="B"> B) Pain and temperature</label>
-            <label><input type="radio" name="q10" value="C"> C) Visual input</label>
-            <label><input type="radio" name="q10" value="D"> D) Auditory input</label>
-            <div class="feedback" id="f10"></div>
-        </div>
-
-        <h2>Part 2: Spinal Cord & Tracts (Syllabus Item ix)</h2>
-
-        <div class="question" id="q11-container">
-            <p>11. Which ascending tract of the spinal cord is primarily responsible for transmitting sensations of pain and temperature?</p>
-            <label><input type="radio" name="q11" value="A"> A) Anterior spinothalamic tract</label>
-            <label><input type="radio" name="q11" value="B"> B) Lateral spinothalamic tract</label>
-            <label><input type="radio" name="q11" value="C"> C) Fasciculus gracilis</label>
-            <label><input type="radio" name="q11" value="D"> D) Corticospinal tract</label>
-            <div class="feedback" id="f11"></div>
-        </div>
-
-        <div class="question" id="q12-container">
-            <p>12. The dorsal column-medial lemniscal (DCML) pathway carries information regarding:</p>
-            <label><input type="radio" name="q12" value="A"> A) Fine touch, vibration, and conscious proprioception</label>
-            <label><input type="radio" name="q12" value="B"> B) Crude touch and deep pressure</label>
-            <label><input type="radio" name="q12" value="C"> C) Unconscious proprioception</label>
-            <label><input type="radio" name="q12" value="D"> D) Voluntary motor commands</label>
-            <div class="feedback" id="f12"></div>
-        </div>
-
-        <div class="question" id="q13-container">
-            <p>13. Which descending tract is essential for voluntary, precise, skilled movements of the distal parts of the limbs (like the fingers)?</p>
-            <label><input type="radio" name="q13" value="A"> A) Rubrospinal tract</label>
-            <label><input type="radio" name="q13" value="B"> B) Vestibulospinal tract</label>
-            <label><input type="radio" name="q13" value="C"> C) Lateral corticospinal tract</label>
-            <label><input type="radio" name="q13" value="D"> D) Tectospinal tract</label>
-            <div class="feedback" id="f13"></div>
-        </div>
-
-        <div class="question" id="q14-container">
-            <p>14. Approximately 85-90% of the fibers in the corticospinal pathway decussate (cross over to the opposite side). Where does this decussation occur?</p>
-            <label><input type="radio" name="q14" value="A"> A) The thalamus</label>
-            <label><input type="radio" name="q14" value="B"> B) The pyramids of the medulla</label>
-            <label><input type="radio" name="q14" value="C"> C) The anterior white commissure of the spinal cord</label>
-            <label><input type="radio" name="q14" value="D"> D) The pons</label>
-            <div class="feedback" id="f14"></div>
-        </div>
-
-        <div class="question" id="q15-container">
-            <p>15. In a cross-section of the spinal cord, where are the cell bodies of somatic lower motor neurons located?</p>
-            <label><input type="radio" name="q15" value="A"> A) Dorsal root ganglia</label>
-            <label><input type="radio" name="q15" value="B"> B) Lateral horn</label>
-            <label><input type="radio" name="q15" value="C"> C) Dorsal horn</label>
-            <label><input type="radio" name="q15" value="D"> D) Ventral (anterior) horn</label>
-            <div class="feedback" id="f15"></div>
-        </div>
-
-        <div class="question" id="q16-container">
-            <p>16. Clinically, a positive Babinski sign (upward fanning of the toes when the sole is stroked) in an adult indicates damage to:</p>
-            <label><input type="radio" name="q16" value="A"> A) Lower motor neurons</label>
-            <label><input type="radio" name="q16" value="B"> B) Upper motor neurons (e.g., Corticospinal tract)</label>
-            <label><input type="radio" name="q16" value="C"> C) The spinocerebellar tracts</label>
-            <label><input type="radio" name="q16" value="D"> D) Peripheral sensory nerves</label>
-            <div class="feedback" id="f16"></div>
-        </div>
-
-        <div class="question" id="q17-container">
-            <p>17. The anterior and posterior spinocerebellar tracts carry what specific type of sensory information?</p>
-            <label><input type="radio" name="q17" value="A"> A) Conscious proprioception</label>
-            <label><input type="radio" name="q17" value="B"> B) Unconscious proprioception from muscles and joints</label>
-            <label><input type="radio" name="q17" value="C"> C) Noxious (painful) stimuli</label>
-            <label><input type="radio" name="q17" value="D"> D) Light touch</label>
-            <div class="feedback" id="f17"></div>
-        </div>
-
-        <div class="question" id="q18-container">
-            <p>18. Which extrapyramidal descending tract originates in the red nucleus of the midbrain and primarily assists in controlling flexor muscle tone?</p>
-            <label><input type="radio" name="q18" value="A"> A) Rubrospinal tract</label>
-            <label><input type="radio" name="q18" value="B"> B) Reticulospinal tract</label>
-            <label><input type="radio" name="q18" value="C"> C) Vestibulospinal tract</label>
-            <label><input type="radio" name="q18" value="D"> D) Anterior corticospinal tract</label>
-            <div class="feedback" id="f18"></div>
-        </div>
-
-        <div class="question" id="q19-container">
-            <p>19. If a patient suffers damage specifically to the anterior spinothalamic tract, they will likely experience a deficit in:</p>
-            <label><input type="radio" name="q19" value="A"> A) Pain sensation</label>
-            <label><input type="radio" name="q19" value="B"> B) Two-point discrimination</label>
-            <label><input type="radio" name="q19" value="C"> C) Crude touch and pressure</label>
-            <label><input type="radio" name="q19" value="D"> D) Motor function</label>
-            <div class="feedback" id="f19"></div>
-        </div>
-
-        <div class="question" id="q20-container">
-            <p>20. A clinician asks a patient to stand with their feet together and close their eyes. The patient loses balance immediately upon closing their eyes (Positive Romberg Test). This primarily indicates a lesion in the:</p>
-            <label><input type="radio" name="q20" value="A"> A) Corticospinal tract</label>
-            <label><input type="radio" name="q20" value="B"> B) Cerebellum</label>
-            <label><input type="radio" name="q20" value="C"> C) Dorsal columns (loss of conscious proprioception)</label>
-            <label><input type="radio" name="q20" value="D"> D) Spinothalamic tract</label>
-            <div class="feedback" id="f20"></div>
-        </div>
-
-        <button type="button" onclick="calculateScore()">Submit Answers</button>
-    </form>
-
-    <div id="results">
-        <h2 id="scoreDisplay"></h2>
-        <p id="scoreMessage"></p>
+    <div class="controls">
+        <button id="check-btn" onclick="checkAnswer()">Check Answer</button>
+        <button id="next-btn" onclick="nextQuestion()">Next Question</button>
+        <button id="restart-btn" onclick="location.reload()">Restart Quiz</button>
     </div>
 </div>
 
 <script>
-    const answerKey = {
-        q1: 'B', q2: 'C', q3: 'A', q4: 'B', q5: 'B',
-        q6: 'A', q7: 'C', q8: 'A', q9: 'D', q10: 'A',
-        q11: 'B', q12: 'A', q13: 'C', q14: 'B', q15: 'D',
-        q16: 'B', q17: 'B', q18: 'A', q19: 'C', q20: 'C'
-    };
+    const questions = [
+        { q: "Which structures connect the cerebellum to the brainstem?", a: "Cerebellar peduncles", options: ["Basal ganglia", "Cerebellar peduncles", "Corpus callosum", "Medullary pyramids"], note: "The superior, middle, and inferior peduncles are the 'bridges' between the brainstem and cerebellum." },
+        { q: "The cardiovascular and respiratory centers are primarily located in the:", a: "Medulla oblongata", options: ["Midbrain", "Cerebellum", "Medulla oblongata", "Thalamus"], note: "The medulla is the 'autonomic hub' for life-sustaining functions." },
+        { q: "The substantia nigra, involved in dopamine production, is located in the:", a: "Midbrain", options: ["Midbrain", "Pons", "Medulla", "Cerebellar cortex"], note: "Located in the midbrain; loss of these neurons leads to Parkinson's disease." },
+        { q: "What is the primary function of the cerebellum?", a: "Coordinating motor movements and balance", options: ["Initiating voluntary contractions", "Coordinating motor movements and balance", "Conscious sensory perception", "Regulating sleep-wake cycles"], note: "It acts as a 'quality control' center for movement." },
+        { q: "The superior colliculi are responsible for:", a: "Visual reflexes", options: ["Auditory reflexes", "Visual reflexes", "Proprioception", "Facial expressions"], note: "Superior = Sight; Inferior = Sound." },
+        { q: "Damage to the cerebellum usually presents as:", a: "Ataxia", options: ["Ataxia", "Spastic paralysis", "Loss of sensation", "Aphasia"], note: "Ataxia is characterized by 'drunk-like' uncoordinated movements." },
+        { q: "Most efferent (output) fibers leave the cerebellum through the:", a: "Superior cerebellar peduncle", options: ["Inferior peduncle", "Middle peduncle", "Superior cerebellar peduncle", "Cerebral peduncles"], note: "The superior peduncle is the primary output pathway to the midbrain and thalamus." },
+        { q: "Which diffuse network in the brainstem maintains alertness?", a: "Reticular Formation (RAS)", options: ["Limbic System", "Reticular Formation (RAS)", "Extrapyramidal System", "Medial Lemniscus"], note: "The RAS is the 'alarm clock' of the brain." },
+        { q: "The pneumotaxic center (breathing regulation) is found in the:", a: "Pons", options: ["Midbrain", "Medulla", "Cerebellum", "Pons"], note: "The pons works with the medulla to smooth out respiratory rhythms." },
+        { q: "The inferior olivary nuclei relay information to the cerebellum regarding:", a: "Proprioceptive and motor learning", options: ["Proprioceptive and motor learning", "Pain and temperature", "Visual input", "Auditory input"], note: "The olives are vital for timing and motor coordination." },
+        { q: "Which ascending tract transmits pain and temperature?", a: "Lateral spinothalamic tract", options: ["Anterior spinothalamic tract", "Lateral spinothalamic tract", "Fasciculus gracilis", "Corticospinal tract"], note: "Lateral = Pain/Temp; Anterior = Crude touch." },
+        { q: "The DCML pathway carries information regarding:", a: "Fine touch, vibration, and conscious proprioception", options: ["Fine touch, vibration, and conscious proprioception", "Crude touch", "Unconscious proprioception", "Voluntary motor commands"], note: "The Dorsal Column system is for 'high-resolution' tactile info." },
+        { q: "Which tract is essential for skilled finger movements?", a: "Lateral corticospinal tract", options: ["Rubrospinal tract", "Vestibulospinal tract", "Lateral corticospinal tract", "Tectospinal tract"], note: "This is the primary voluntary motor pathway." },
+        { q: "Where does the decussation (crossing) of the corticospinal tract occur?", a: "The pyramids of the medulla", options: ["The thalamus", "The pyramids of the medulla", "The spinal cord", "The pons"], note: "This is why the left brain controls the right side of the body." },
+        { q: "Where are cell bodies of lower motor neurons located?", a: "Ventral (anterior) horn", options: ["Dorsal root ganglia", "Lateral horn", "Dorsal horn", "Ventral (anterior) horn"], note: "The ventral horn is the 'exit' for motor commands." },
+        { q: "A positive Babinski sign in an adult indicates damage to:", a: "Upper motor neurons", options: ["Lower motor neurons", "Upper motor neurons", "Spinocerebellar tracts", "Peripheral nerves"], note: "Babinski is a classic sign of corticospinal (UMN) damage." },
+        { q: "The spinocerebellar tracts carry what type of info?", a: "Unconscious proprioception", options: ["Conscious proprioception", "Unconscious proprioception", "Pain", "Light touch"], note: "This info goes to the cerebellum, so you aren't 'conscious' of it." },
+        { q: "Which tract originates in the red nucleus of the midbrain?", a: "Rubrospinal tract", options: ["Rubrospinal tract", "Reticulospinal tract", "Vestibulospinal tract", "Anterior corticospinal tract"], note: "Rubro = Red (Latin)." },
+        { q: "Damage to the anterior spinothalamic tract results in loss of:", a: "Crude touch and pressure", options: ["Pain sensation", "Two-point discrimination", "Crude touch and pressure", "Motor function"], note: "Anterior carries 'non-discriminative' touch." },
+        { q: "A positive Romberg test (falling when eyes close) indicates a lesion in the:", a: "Dorsal columns", options: ["Corticospinal tract", "Cerebellum", "Dorsal columns", "Spinothalamic tract"], note: "If you lose balance *only* when eyes are shut, your proprioception (DCML) is failing." }
+    ];
 
-    function calculateScore() {
-        let score = 0;
-        let total = Object.keys(answerKey).length;
+    let currentIdx = 0;
+    let selectedAnswer = null;
 
-        for (let i = 1; i <= total; i++) {
-            let questionKey = 'q' + i;
-            let selectedOptions = document.getElementsByName(questionKey);
-            let feedbackDiv = document.getElementById('f' + i);
-            let answered = false;
-            let userAnswer = '';
-
-            for (let j = 0; j < selectedOptions.length; j++) {
-                if (selectedOptions[j].checked) {
-                    answered = true;
-                    userAnswer = selectedOptions[j].value;
-                    break;
-                }
-            }
-
-            feedbackDiv.style.display = 'block';
-
-            if (!answered) {
-                feedbackDiv.innerHTML = '<span class="incorrect-text">No answer selected. The correct answer is ' + answerKey[questionKey] + '.</span>';
-            } else if (userAnswer === answerKey[questionKey]) {
-                score++;
-                feedbackDiv.innerHTML = '<span class="correct-text">Correct!</span>';
-            } else {
-                feedbackDiv.innerHTML = '<span class="incorrect-text">Incorrect. The correct answer is ' + answerKey[questionKey] + '.</span>';
-            }
-        }
-
-        let resultsDiv = document.getElementById('results');
-        let scoreDisplay = document.getElementById('scoreDisplay');
-        let scoreMessage = document.getElementById('scoreMessage');
-
-        resultsDiv.style.display = 'block';
-        scoreDisplay.innerText = 'Your Score: ' + score + ' / ' + total;
-
-        let percentage = (score / total) * 100;
-        if (percentage >= 90) {
-            scoreMessage.innerText = 'Excellent job! You have a great grasp of neuroanatomy.';
-        } else if (percentage >= 70) {
-            scoreMessage.innerText = 'Good work! Review the questions you missed to solidify your tracts and nuclei.';
-        } else {
-            scoreMessage.innerText = 'Keep studying! The pathways and structures of the brain and spinal cord require a lot of memorization.';
-        }
+    function loadQuestion() {
+        const q = questions[currentIdx];
+        document.getElementById('progress').innerText = `Question ${currentIdx + 1} of ${questions.length}`;
+        document.getElementById('question').innerText = q.q;
+        const container = document.getElementById('options-container');
+        container.innerHTML = '';
         
-        // Scroll to results
-        resultsDiv.scrollIntoView({ behavior: 'smooth' });
+        q.options.forEach(opt => {
+            const div = document.createElement('div');
+            div.className = 'option';
+            div.innerText = opt;
+            div.onclick = () => selectOption(div, opt);
+            container.appendChild(div);
+        });
+
+        document.getElementById('feedback').style.display = 'none';
+        document.getElementById('check-btn').style.display = 'block';
+        document.getElementById('next-btn').style.display = 'none';
+        selectedAnswer = null;
     }
+
+    function selectOption(element, val) {
+        document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+        element.classList.add('selected');
+        selectedAnswer = val;
+    }
+
+    function checkAnswer() {
+        if (!selectedAnswer) {
+            alert("Please select an answer first!");
+            return;
+        }
+
+        const q = questions[currentIdx];
+        const feedback = document.getElementById('feedback');
+        feedback.style.display = 'block';
+
+        if (selectedAnswer === q.a) {
+            feedback.className = 'feedback correct';
+            feedback.innerHTML = `Correct! <br><small>${q.note}</small>`;
+        } else {
+            feedback.className = 'feedback incorrect';
+            feedback.innerHTML = `Incorrect. The answer is: ${q.a} <br><small>${q.note}</small>`;
+        }
+
+        document.getElementById('check-btn').style.display = 'none';
+        
+        if (currentIdx < questions.length - 1) {
+            document.getElementById('next-btn').style.display = 'block';
+        } else {
+            document.getElementById('restart-btn').style.display = 'block';
+            document.getElementById('question').innerText = "Quiz Complete!";
+        }
+    }
+
+    function nextQuestion() {
+        currentIdx++;
+        loadQuestion();
+    }
+
+    // Start
+    loadQuestion();
 </script>
 
 </body>
